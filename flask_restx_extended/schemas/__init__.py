@@ -18,7 +18,7 @@ except ImportError:
     from collections import Mapping
 from jsonschema import Draft4Validator
 
-from flask_restx import errors
+from flask_restx_extended import errors
 
 
 class SchemaValidationError(errors.ValidationError):

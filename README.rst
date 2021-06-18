@@ -1,6 +1,6 @@
-===========
-Flask RESTX
-===========
+====================
+Flask RESTX Extended
+====================
 
 .. image:: https://github.com/python-restx/flask-restx/workflows/Tests/badge.svg?branch=master&event=push
     :target: https://github.com/python-restx/flask-restx/actions?query=workflow%3ATests
@@ -25,36 +25,26 @@ Flask RESTX
     :alt: Code style: black
 
 
-Flask-RESTX is a community driven fork of `Flask-RESTPlus <https://github.com/noirbizarre/flask-restplus>`_.
+Flask-RESTX-Extended is a fork of `Flask-RESTX <https://github.com/python-restx/flask-restx>`_.
 
 
-Flask-RESTX is an extension for `Flask`_ that adds support for quickly building REST APIs.
-Flask-RESTX encourages best practices with minimal setup.
-If you are familiar with Flask, Flask-RESTX should be easy to pick up.
-It provides a coherent collection of decorators and tools to describe your API
-and expose its documentation properly using `Swagger`_.
+This version fix reverse proxy swagger ui load error on Flask-RESTX.
 
 
 Compatibility
 =============
 
-Flask-RESTX requires Python 2.7 or 3.4+.
+Flask-RESTX-Extended requires Python 2.7 or 3.4+.
 
 
 Installation
 ============
 
-You can install Flask-RESTX with pip:
+You can install Flask-RESTX-Extended with pip:
 
 .. code-block:: console
 
-    $ pip install flask-restx
-
-or with easy_install:
-
-.. code-block:: console
-
-    $ easy_install flask-restx
+    $ pip install flask-restx-extended
 
 
 Quick start
@@ -68,6 +58,7 @@ With Flask-RESTX, you only import the api instance to route and document your en
     from flask_restx import Api, Resource, fields
 
     app = Flask(__name__)
+    app["SWAGGER_BASEURL"] = "/base"
     api = Api(app, version='1.0', title='TodoMVC API',
         description='A simple TodoMVC API',
     )
@@ -157,28 +148,3 @@ With Flask-RESTX, you only import the api instance to route and document your en
 
     if __name__ == '__main__':
         app.run(debug=True)
-
-
-Contributors
-============
-
-Flask-RESTX is brought to you by @python-restx. Since early 2019 @SteadBytes,
-@a-luna, @j5awry, @ziirish volunteered to help @python-restx keep the project up
-and running.
-Of course everyone is welcome to contribute and we will be happy to review your
-PR's or answer to your issues.
-
-
-Documentation
-=============
-
-The documentation is hosted `on Read the Docs <http://flask-restx.readthedocs.io/en/latest/>`_
-
-
-.. _Flask: http://flask.pocoo.org/
-.. _Swagger: http://swagger.io/
-
-
-Contribution
-============
-Want to contribute! That's awesome! Check out `CONTRIBUTING.rst! <https://github.com/python-restx/flask-restx/blob/master/CONTRIBUTING.rst>`_

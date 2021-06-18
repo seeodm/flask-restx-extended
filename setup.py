@@ -65,7 +65,11 @@ long_description = "\n".join((rst("README.rst"), ""))
 
 
 exec(
-    compile(open("flask_restx/__about__.py").read(), "flask_restx/__about__.py", "exec")
+    compile(
+        open("flask_restx_extended/__about__.py").read(),
+        "flask_restx_extended/__about__.py",
+        "exec",
+    )
 )
 
 install_requires = pip("install")
@@ -74,18 +78,22 @@ tests_require = pip("test")
 dev_require = tests_require + pip("develop")
 
 setup(
-    name="flask-restx",
+    name="flask-restx-extended",
     version=__version__,
     description=__description__,
     long_description=long_description,
-    url="https://github.com/python-restx/flask-restx",
-    author="python-restx Authors",
+    url="https://github.com/seeodm/flask-restx-extended",
+    author="Dongmin Seo",
     packages=find_packages(exclude=["tests", "tests.*"]),
     include_package_data=True,
     install_requires=install_requires,
     tests_require=tests_require,
     dev_require=dev_require,
-    extras_require={"test": tests_require, "doc": doc_require, "dev": dev_require,},
+    extras_require={
+        "test": tests_require,
+        "doc": doc_require,
+        "dev": dev_require,
+    },
     license="BSD-3-Clause",
     zip_safe=False,
     keywords="flask restx rest api swagger openapi",

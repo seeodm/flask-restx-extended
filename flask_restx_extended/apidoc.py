@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from flask import url_for, Blueprint, render_template
+from flask import url_for, Blueprint, render_template, current_app
 
 
 class Apidoc(Blueprint):
@@ -30,7 +30,9 @@ apidoc = Apidoc(
 
 @apidoc.add_app_template_global
 def swagger_static(filename):
-    return url_for("restx_doc.static", filename=filename)
+    return current_app.config.get("SWAGGER_BASEURL") + url_for(
+        "restx_doc.static", filename=filename
+    )
 
 
 def ui_for(api):

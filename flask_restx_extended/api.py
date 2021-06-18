@@ -17,6 +17,7 @@ from types import MethodType
 
 from flask import url_for, request, current_app
 from flask import make_response as original_flask_make_response
+
 try:
     from flask.helpers import _endpoint_from_view_func
 except ImportError:
@@ -88,6 +89,8 @@ class Api(object):
     :param bool ordered: Whether or not preserve order models and marshalling.
     :param str doc: The documentation path. If set to a false value, documentation is disabled.
                 (Default to '/')
+    :param str swagger_base_url: The base Swagger UI route path. This is necessary for some deployments behind a reverse proxy.
+                                (Default to "")
     :param list decorators: Decorators to attach to every resource
     :param bool catch_all_404s: Use :meth:`handle_error`
         to handle 404 errors throughout your app
@@ -151,10 +154,12 @@ class Api(object):
         self._default_error_handler = None
         self.tags = tags or []
 
-        self.error_handlers = OrderedDict({
-            ParseError: mask_parse_error_handler,
-            MaskError: mask_error_handler,
-        })
+        self.error_handlers = OrderedDict(
+            {
+                ParseError: mask_parse_error_handler,
+                MaskError: mask_error_handler,
+            }
+        )
         self._schema = None
         self.models = {}
         self._refresolver = None
@@ -261,14 +266,15 @@ class Api(object):
         app.config.setdefault("RESTX_MASK_HEADER", "X-Fields")
         app.config.setdefault("RESTX_MASK_SWAGGER", True)
         app.config.setdefault("RESTX_INCLUDE_ALL_MODELS", False)
+        app.config.setdefault("SWAGGER_BASEURL", "")
 
         # check for deprecated config variable names
         if "ERROR_404_HELP" in app.config:
-            app.config['RESTX_ERROR_404_HELP'] = app.config['ERROR_404_HELP']
+            app.config["RESTX_ERROR_404_HELP"] = app.config["ERROR_404_HELP"]
             warnings.warn(
                 "'ERROR_404_HELP' config setting is deprecated and will be "
                 "removed in the future. Use 'RESTX_ERROR_404_HELP' instead.",
-                DeprecationWarning
+                DeprecationWarning,
             )
 
     def __getattr__(self, name):
@@ -416,7 +422,8 @@ class Api(object):
             kwargs.pop("fallback_mediatype", None) or self.default_mediatype
         )
         mediatype = request.accept_mimetypes.best_match(
-            self.representations, default=default_mediatype,
+            self.representations,
+            default=default_mediatype,
         )
         if mediatype is None:
             raise NotAcceptable()
@@ -531,7 +538,7 @@ class Api(object):
         :rtype: str
         """
         external = None if self.url_scheme is None else True
-        return url_for(
+        return self.app.config.get("SWAGGER_BASEURL") + url_for(
             self.endpoint("specs"), _scheme=self.url_scheme, _external=external
         )
 
