@@ -58,7 +58,7 @@ With Flask-RESTX, you only import the api instance to route and document your en
     from flask_restx import Api, Resource, fields
 
     app = Flask(__name__)
-    app["SWAGGER_BASEURL"] = "/base"
+    app.config["SWAGGER_BASEURL"] = "/base"
     api = Api(app, version='1.0', title='TodoMVC API',
         description='A simple TodoMVC API',
     )
